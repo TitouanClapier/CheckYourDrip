@@ -76,7 +76,7 @@ export async function sendDetectionEmail(
 </html>`;
 
   await resend.emails.send({
-    from: process.env.EMAIL_FROM || "CheckYourDrip <noreply@checkyourdrip.com>",
+    from: process.env.EMAIL_FROM || "onboarding@resend.dev",
     to: settings.email_addresses,
     subject: `[CheckYourDrip] ${classMeta.label} détecté — ${Math.round(payload.confidence * 100)}% confiance`,
     html,

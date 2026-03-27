@@ -25,7 +25,7 @@ export async function POST() {
   // 2. Envoyer directement et retourner la réponse Resend complète
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { data, error } = await resend.emails.send({
-    from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+    from: process.env.EMAIL_FROM?.trim() || "onboarding@resend.dev",
     to: settings.email_addresses,
     subject: "[Test] CheckYourDrip — vérification email",
     html: "<p>Test de notification CheckYourDrip. Si vous recevez cet email, la configuration est correcte.</p>",
