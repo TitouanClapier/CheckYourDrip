@@ -298,7 +298,7 @@ Après chaque entraînement, les fichiers suivants sont générés dans `trainin
 
 #### `results.png` — Vue d'ensemble de l'entraînement
 
-![results](docs/training/results.png)
+![results](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605193/checkyourdrip/training/results.png)
 
 Montre l'évolution sur toutes les époques de :
 - `train/box_loss` — erreur de localisation des boîtes (doit descendre)
@@ -315,7 +315,7 @@ Montre l'évolution sur toutes les époques de :
 
 #### `BoxPR_curve.png` — Courbe Précision / Rappel
 
-![BoxPR_curve](docs/training/BoxPR_curve.png)
+![BoxPR_curve](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605189/checkyourdrip/training/BoxPR_curve.png)
 
 Montre le compromis précision/rappel pour chaque classe à différents seuils de confiance. L'aire sous la courbe = mAP50.
 
@@ -325,7 +325,7 @@ Montre le compromis précision/rappel pour chaque classe à différents seuils d
 
 #### `BoxP_curve.png` — Courbe de Précision
 
-![BoxP_curve](docs/training/BoxP_curve.png)
+![BoxP_curve](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605190/checkyourdrip/training/BoxP_curve.png)
 
 Précision en fonction du seuil de confiance.
 
@@ -335,7 +335,7 @@ Précision en fonction du seuil de confiance.
 
 #### `BoxR_curve.png` — Courbe de Rappel
 
-![BoxR_curve](docs/training/BoxR_curve.png)
+![BoxR_curve](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605190/checkyourdrip/training/BoxR_curve.png)
 
 Rappel en fonction du seuil de confiance.
 
@@ -345,7 +345,7 @@ Rappel en fonction du seuil de confiance.
 
 #### `BoxF1_curve.png` — Courbe F1
 
-![BoxF1_curve](docs/training/BoxF1_curve.png)
+![BoxF1_curve](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605188/checkyourdrip/training/BoxF1_curve.png)
 
 F1-score (harmonie entre précision et rappel) en fonction du seuil de confiance. Le **pic de cette courbe indique le seuil de confiance optimal** à utiliser pour la détection.
 
@@ -355,7 +355,7 @@ F1-score (harmonie entre précision et rappel) en fonction du seuil de confiance
 
 #### `confusion_matrix_normalized.png` — Matrice de confusion
 
-![confusion_matrix_normalized](docs/training/confusion_matrix_normalized.png)
+![confusion_matrix_normalized](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605191/checkyourdrip/training/confusion_matrix_normalized.png)
 
 Montre pour chaque classe quel pourcentage d'images est correctement classé, et vers quelles autres classes il y a confusion.
 
@@ -365,7 +365,7 @@ Montre pour chaque classe quel pourcentage d'images est correctement classé, et
 
 #### `labels.jpg` — Distribution des labels
 
-![labels](docs/training/labels.jpg)
+![labels](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605192/checkyourdrip/training/labels.jpg)
 
 Montre la répartition des classes et la distribution spatiale des bounding boxes dans le dataset.
 
@@ -377,7 +377,7 @@ Montre la répartition des classes et la distribution spatiale des bounding boxe
 
 | Début d'entraînement | Fin d'entraînement |
 |---|---|
-| ![train_batch0](docs/training/train_batch0.jpg) | ![train_batch_end](docs/training/train_batch21660.jpg) |
+| ![train_batch0](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605194/checkyourdrip/training/train_batch0.jpg) | ![train_batch_end](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605195/checkyourdrip/training/train_batch21660.jpg) |
 
 Exemples d'images avec les annotations réelles utilisées pendant l'entraînement. On observe l'amélioration de la qualité des détections entre le début et la fin.
 
@@ -387,9 +387,9 @@ Exemples d'images avec les annotations réelles utilisées pendant l'entraîneme
 
 | Vérité terrain (`_labels`) | Prédictions du modèle (`_pred`) |
 |---|---|
-| ![val_labels0](docs/training/val_batch0_labels.jpg) | ![val_pred0](docs/training/val_batch0_pred.jpg) |
-| ![val_labels1](docs/training/val_batch1_labels.jpg) | ![val_pred1](docs/training/val_batch1_pred.jpg) |
-| ![val_labels2](docs/training/val_batch2_labels.jpg) | ![val_pred2](docs/training/val_batch2_pred.jpg) |
+| ![val_labels0](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605196/checkyourdrip/training/val_batch0_labels.jpg) | ![val_pred0](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605197/checkyourdrip/training/val_batch0_pred.jpg) |
+| ![val_labels1](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605198/checkyourdrip/training/val_batch1_labels.jpg) | ![val_pred1](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605198/checkyourdrip/training/val_batch1_pred.jpg) |
+| ![val_labels2](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605199/checkyourdrip/training/val_batch2_labels.jpg) | ![val_pred2](https://res.cloudinary.com/drlngpuiq/image/upload/v1774605199/checkyourdrip/training/val_batch2_pred.jpg) |
 
 > **Comment lire** : comparer `_labels` (vérité terrain) et `_pred` (prédictions). Si les boîtes et labels sont similaires → le modèle apprend bien.
 

@@ -1,0 +1,17 @@
+{
+  "BoxF1_curve.png": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605188/checkyourdrip/training/BoxF1_curve.png",
+  "BoxPR_curve.png": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605189/checkyourdrip/training/BoxPR_curve.png",
+  "BoxP_curve.png": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605190/checkyourdrip/training/BoxP_curve.png",
+  "BoxR_curve.png": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605190/checkyourdrip/training/BoxR_curve.png",
+  "confusion_matrix_normalized.png": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605191/checkyourdrip/training/confusion_matrix_normalized.png",
+  "labels.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605192/checkyourdrip/training/labels.jpg",
+  "results.png": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605193/checkyourdrip/training/results.png",
+  "train_batch0.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605194/checkyourdrip/training/train_batch0.jpg",
+  "train_batch21660.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605195/checkyourdrip/training/train_batch21660.jpg",
+  "val_batch0_labels.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605196/checkyourdrip/training/val_batch0_labels.jpg",
+  "val_batch0_pred.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605197/checkyourdrip/training/val_batch0_pred.jpg",
+  "val_batch1_labels.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605198/checkyourdrip/training/val_batch1_labels.jpg",
+  "val_batch1_pred.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605198/checkyourdrip/training/val_batch1_pred.jpg",
+  "val_batch2_labels.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605199/checkyourdrip/training/val_batch2_labels.jpg",
+  "val_batch2_pred.jpg": "https://res.cloudinary.com/drlngpuiq/image/upload/v1774605199/checkyourdrip/training/val_batch2_pred.jpg"
+}
