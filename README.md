@@ -728,3 +728,51 @@ git push
 | Push navigateur | Notification même fenêtre fermée (mobile + desktop) |
 | Email | Email avec photo à chaque infraction (seuil de confiance configurable) |
 | Paramètres | Page dédiée pour gérer emails et seuil de confiance |
+
+---
+
+## TODO — Pistes d'amélioration
+
+### Sécurité & accès
+
+- [ ] **Authentification** — Ajouter un login (Supabase Auth ou NextAuth) pour protéger le dashboard. Actuellement le dashboard est accessible sans mot de passe à quiconque connaît l'URL.
+- [ ] **Rôles utilisateurs** — Distinguer admin (accès paramètres + reset) et observateur (lecture seule).
+- [ ] **Rate limiting** — Limiter les appels aux routes API pour éviter les abus (ex: librairie `@upstash/ratelimit`).
+
+### UX & mobile
+
+- [ ] **PWA installable** — Ajouter un `manifest.json` pour permettre l'installation sur l'écran d'accueil mobile (icône, splash screen, mode standalone).
+- [ ] **Mode hors-ligne** — Mettre en cache les dernières détections avec un service worker pour consulter le feed sans connexion.
+- [ ] **Swipe pour marquer vu** — Geste swipe sur mobile sur une DetectionCard pour la marquer comme vue.
+- [ ] **Dark/light mode** — Ajouter un toggle de thème (actuellement dark uniquement).
+
+### Fonctionnalités dashboard
+
+- [ ] **Pagination / infinite scroll** — Charger les détections au défilement plutôt que de limiter à 50.
+- [ ] **Export CSV** — Exporter les détections filtrées en CSV pour analyse externe.
+- [ ] **Graphiques** — Visualiser les infractions dans le temps (par heure, par jour, par classe) avec une librairie type Recharts.
+- [ ] **Recherche** — Chercher dans les détections par date, classe ou confiance.
+- [ ] **Commentaires** — Ajouter une note textuelle sur une détection (contexte, action prise…).
+
+### Modèle & détection
+
+- [ ] **Nouvelles classes** — Ajouter des classes manquantes : `shorts`, `crop_top`, `sleeveless`, `barefoot`…
+- [ ] **Seuil par classe** — Configurer un seuil de confiance différent par classe depuis les paramètres (ex : mini_skirt à 0.6, flip_flops à 0.4).
+- [ ] **Déduplication améliorée** — Éviter de re-notifier pour la même personne encore présente dans le champ de la caméra (suivi d'objet entre frames).
+- [ ] **Multi-caméras** — Gérer plusieurs flux webcam simultanément avec un identifiant de caméra par détection.
+
+### KPIs & métriques métier
+
+- [ ] **Taux de faux positifs** — Suivre le ratio détections marquées "faux positif" via la vérification / total détections, pour mesurer la fiabilité du modèle en conditions réelles.
+- [ ] **Taux de traitement** — % de détections consultées (seen) et vérifiées, pour savoir si les agents suivent les alertes.
+- [ ] **Temps de réaction** — Délai moyen entre `detected_at` et le marquage `seen`, pour évaluer la réactivité des opérateurs.
+- [ ] **Infractions par heure / par jour** — Courbe de charge pour identifier les pics (heure d'ouverture, événements…).
+- [ ] **Top classes** — Classement des infractions les plus fréquentes sur une période glissante (7j, 30j).
+- [ ] **Taux de notification délivrée** — % de push notifications envoyées avec succès vs erreurs (suivi des échecs `web-push`).
+- [ ] **Page KPI dédiée** — Créer une page `/stats` dans le dashboard avec ces métriques affichées en graphiques et tableaux, distincte du feed temps réel.
+
+### Infrastructure
+
+- [ ] **Logs d'erreurs** — Intégrer Sentry ou LogRocket pour tracer les erreurs frontend/API en production.
+- [ ] **Tests** — Ajouter des tests unitaires sur les routes API (Jest + Supertest) et des tests E2E (Playwright).
+- [ ] **CI/CD** — Pipeline GitHub Actions : lint + tests avant chaque merge sur `main`.
