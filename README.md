@@ -90,17 +90,17 @@ projet_ia/
 
 ### Sources Roboflow
 
-| Dataset | Classe(s) cible(s) | Images |
-|---------|-------------------|--------|
-| `adidas-fjvhm-1dok0` | flip_flops | ~200 |
-| `sandals-fnnnf-mt6yc` | sandals | ~510 |
-| `sandals-qytxp-zkfga` | sandals | ~100 |
-| `headwear-onnex-qjqis` | headwear | ~1 257 |
-| `pants-6gyrt-nlavs` | joggers, mini_skirt, sportswear | ~500 |
-| `skirt-hyd6u-nsc76` | mini_skirt, headwear, joggers | ~225 |
-| `skirt-0hvba-qt8uc` | mini_skirt | ~543 |
-| `bitirme-calismasi-svzen` | ripped_clothes | ~369 |
-| `footest-rcn5t` | sportswear | ~1 315 |
+| Dataset | Classe(s) cible(s) | Total | Train (70%) | Val (20%) | Test (10%) |
+|---------|-------------------|------:|------------:|----------:|-----------:|
+| `adidas-fjvhm-1dok0` | flip_flops | ~200 | ~140 | ~40 | ~20 |
+| `sandals-fnnnf-mt6yc` | sandals | ~510 | ~357 | ~102 | ~51 |
+| `sandals-qytxp-zkfga` | sandals | ~100 | ~70 | ~20 | ~10 |
+| `headwear-onnex-qjqis` | headwear | ~1 257 | ~880 | ~251 | ~126 |
+| `pants-6gyrt-nlavs` | joggers, mini_skirt, sportswear | ~500 | ~350 | ~100 | ~50 |
+| `skirt-hyd6u-nsc76` | mini_skirt, headwear, joggers | ~225 | ~158 | ~45 | ~22 |
+| `skirt-0hvba-qt8uc` | mini_skirt | ~543 | ~380 | ~109 | ~54 |
+| `bitirme-calismasi-svzen` | ripped_clothes | ~369 | ~258 | ~74 | ~37 |
+| `footest-rcn5t` | sportswear | ~1 315 | ~921 | ~263 | ~131 |
 
 ### Stratégie de fusion
 
