@@ -40,7 +40,7 @@ export async function DELETE() {
 
     const basicAuth = Buffer.from(`${apiKey}:${apiSecret}`).toString("base64");
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/resources/image/upload?prefix=${FOLDER}&all=true`,
+      `https://api.cloudinary.com/v1_1/${cloudName}/resources/image/upload?prefix=${FOLDER}&max_results=500`,
       {
         method: "DELETE",
         headers: { Authorization: `Basic ${basicAuth}` },
