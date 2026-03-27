@@ -1,20 +1,45 @@
 import { NextResponse } from "next/server";
 import { getMongoDb } from "@/lib/mongodb";
+import { getSupabaseAdmin } from "@/lib/supabase";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
-  const results: Record<string, unknown> = {
-    mongo_uri_set: !!process.env.MONGO_URI,
-    mongo_db: process.env.MONGO_DB,
-  };
+  const results: Record<string, unknown> = {};
 
-  try {
-    const db = await getMongoDb();
-    const count = await db.collection("Logs").countDocuments();
-    results.mongo_status = "OK";
-    results.logs_count = count;
-  } catch (err) {
-    results.mongo_status = "ERREUR";
-    results.mongo_error = String(err);
+  // Sample mongo_ids from Supabase
+  const supabase = getSupabaseAdmin();
+  const { data: rows } = await supabase
+    .from("detections")
+    .select("id, mongo_id")
+    .not("mongo_id", "is", null)
+    .limit(3);
+
+  results.sample_mongo_ids = rows?.map((r) => r.mongo_id);
+
+  // Try to convert them to ObjectId
+  const conversions = rows?.map((r) => {
+    try {
+      new ObjectId(r.mongo_id);
+      return { id: r.id, mongo_id: r.mongo_id, valid: true };
+    } catch {
+      return { id: r.id, mongo_id: r.mongo_id, valid: false };
+    }
+  });
+  results.objectid_valid = conversions;
+
+  // Try fetching the first one directly
+  if (rows?.[0]?.mongo_id) {
+    try {
+      const db = await getMongoDb();
+      const doc = await db
+        .collection("Logs")
+        .findOne({ _id: new ObjectId(rows[0].mongo_id) });
+      results.first_log = doc
+        ? { found: true, has_photo: !!doc.photo, photo_preview: String(doc.photo).slice(0, 60) }
+        : { found: false };
+    } catch (err) {
+      results.first_log_error = String(err);
+    }
   }
 
   return NextResponse.json(results);
