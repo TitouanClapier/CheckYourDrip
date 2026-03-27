@@ -35,11 +35,22 @@ export async function GET() {
         .collection("Logs")
         .findOne({ _id: new ObjectId(rows[0].mongo_id) });
       results.first_log = doc
-        ? { found: true, has_photo: !!doc.photo, photo_preview: String(doc.photo).slice(0, 60) }
+        ? { found: true, has_photo: !!doc.photo, photo_url: doc.photo }
         : { found: false };
     } catch (err) {
       results.first_log_error = String(err);
     }
+  }
+
+  // Check what /api/detections actually returns for the first item
+  try {
+    const { getLogsByIds } = await import("@/lib/mongodb");
+    const mongoIds = (rows ?? []).filter((r) => r.mongo_id).map((r) => r.mongo_id as string);
+    const logsMap = await getLogsByIds(mongoIds);
+    results.logs_map_keys = Object.keys(logsMap);
+    results.first_photo_url = logsMap[mongoIds[0]]?.photo ?? null;
+  } catch (err) {
+    results.logs_map_error = String(err);
   }
 
   return NextResponse.json(results);
