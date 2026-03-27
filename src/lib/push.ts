@@ -1,11 +1,14 @@
 import webpush from "web-push";
 import { getSupabaseAdmin } from "./supabase";
 
-webpush.setVapidDetails(
-  process.env.VAPID_EMAIL || "mailto:admin@checkyourdrip.com",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
+function getWebPush() {
+  webpush.setVapidDetails(
+    process.env.VAPID_EMAIL || "mailto:admin@checkyourdrip.com",
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+    process.env.VAPID_PRIVATE_KEY!
+  );
+  return webpush;
+}
 
 export type PushPayload = {
   title: string;
@@ -23,9 +26,10 @@ export async function sendPushToAll(payload: PushPayload): Promise<void> {
 
   if (!subs?.length) return;
 
+  const wp = getWebPush();
   const results = await Promise.allSettled(
     subs.map((row) =>
-      webpush.sendNotification(
+      wp.sendNotification(
         row.subscription as webpush.PushSubscription,
         JSON.stringify({
           ...payload,
