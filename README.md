@@ -248,6 +248,16 @@ tensorboard --logdir training/runs/dress_code_detector
 
 ## Résultats et métriques
 
+### Lecture des métriques principales
+
+**mAP50** — précision moyenne sur toutes les classes, en comptant une détection comme correcte si la boîte prédite chevauche la vraie boîte à **au moins 50%** (IoU ≥ 0.50). Seuil permissif : une boîte "à peu près au bon endroit" est acceptée.
+
+**mAP50-95** — même calcul, mais moyenné sur 10 seuils IoU : 50%, 55%, 60%, …, 95%. Beaucoup plus strict : le modèle doit aussi **localiser précisément** la boîte pour marquer des points.
+
+> Un bon mAP50 avec un mAP50-95 nettement plus bas indique que le modèle **classe correctement** mais que ses boîtes ne collent pas parfaitement autour des objets.
+
+---
+
 ### Historique des trainings
 
 | | Training 1 | Training 2 | Training 3 |
