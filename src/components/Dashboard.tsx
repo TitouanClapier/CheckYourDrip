@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { Detection } from "@/lib/supabase";
 import DetectionCard from "./DetectionCard";
+import DetectionModal from "./DetectionModal";
 import StatsBar from "./StatsBar";
 import { CLASS_META, ALL_CLASSES } from "@/lib/constants";
 import clsx from "clsx";
@@ -23,6 +24,7 @@ export default function Dashboard() {
   const [newIds, setNewIds] = useState<Set<number>>(new Set());
   const [connected, setConnected] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [selectedDetection, setSelectedDetection] = useState<Detection | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const showToast = useCallback((msg: string) => {
@@ -244,10 +246,21 @@ export default function Dashboard() {
               detection={d}
               onMarkSeen={handleMarkSeen}
               onVerify={handleVerify}
+              onOpen={setSelectedDetection}
               isNew={newIds.has(d.id)}
             />
           ))}
         </div>
+      )}
+
+      {/* Modal */}
+      {selectedDetection && (
+        <DetectionModal
+          detection={detections.find((d) => d.id === selectedDetection.id) ?? selectedDetection}
+          onClose={() => setSelectedDetection(null)}
+          onMarkSeen={handleMarkSeen}
+          onVerify={handleVerify}
+        />
       )}
     </div>
   );

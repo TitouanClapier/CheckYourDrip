@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { CLASS_META } from "@/lib/constants";
@@ -11,6 +10,7 @@ type Props = {
   detection: Detection;
   onMarkSeen: (id: number) => void;
   onVerify: (id: number, verification: boolean) => void;
+  onOpen: (detection: Detection) => void;
   isNew?: boolean;
 };
 
@@ -18,6 +18,7 @@ export default function DetectionCard({
   detection,
   onMarkSeen,
   onVerify,
+  onOpen,
   isNew,
 }: Props) {
   const meta = CLASS_META[detection.object_class] ?? {
@@ -36,8 +37,9 @@ export default function DetectionCard({
 
   return (
     <div
+      onClick={() => onOpen(detection)}
       className={clsx(
-        "rounded-xl border bg-surface-card p-4 transition-all duration-300",
+        "cursor-pointer rounded-xl border bg-surface-card p-4 transition-all duration-300 hover:border-gray-500 hover:bg-gray-800",
         meta.border,
         isNew && "animate-slide-in ring-1 ring-white/10",
         detection.seen && "opacity-60"
@@ -45,14 +47,13 @@ export default function DetectionCard({
     >
       <div className="flex gap-4">
         {/* Photo */}
-        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-surface-elevated">
+        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-surface-elevated">
           {detection.photo_url ? (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src={detection.photo_url}
               alt={meta.label}
-              fill
-              className="object-cover"
-              sizes="96px"
+              className="h-full w-full object-cover"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-2xl text-gray-600">
@@ -115,7 +116,7 @@ export default function DetectionCard({
           </div>
 
           {/* Actions */}
-          <div className="mt-3 flex items-center gap-2">
+          <div className="mt-3 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
             {!detection.seen && (
               <button
                 onClick={() => onMarkSeen(detection.id)}
