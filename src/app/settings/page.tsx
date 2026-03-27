@@ -16,6 +16,8 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
   const [testStatus, setTestStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
   const [testError, setTestError] = useState("");
+  const [clearStatus, setClearStatus] = useState<"idle" | "confirming" | "clearing" | "ok" | "error">("idle");
+  const [clearResult, setClearResult] = useState("");
 
   useEffect(() => {
     fetch("/api/notifications")
@@ -37,6 +39,31 @@ export default function SettingsPage() {
     } else {
       setTestStatus("error");
       setTestError(json.error ?? "Erreur inconnue");
+    }
+  }
+
+  async function handleClearCloudinary() {
+    if (clearStatus === "idle") {
+      setClearStatus("confirming");
+      return;
+    }
+    if (clearStatus !== "confirming") return;
+
+    setClearStatus("clearing");
+    setClearResult("");
+    const res = await fetch("/api/cloudinary/clear", { method: "DELETE" });
+    const json = await res.json();
+    if (json.ok) {
+      setClearStatus("ok");
+      setClearResult(
+        `Supabase: ${json.supabase_deleted ?? 0} · MongoDB: ${json.mongo_deleted ?? 0} · Cloudinary: ${json.cloudinary_deleted ?? 0}`
+      );
+      setTimeout(() => { setClearStatus("idle"); setClearResult(""); }, 5000);
+    } else {
+      setClearStatus("error");
+      const errors = [json.supabase_error, json.mongo_error, json.cloudinary_error].filter(Boolean);
+      setClearResult(errors.join(" | ") || "Erreur inconnue");
+      setTimeout(() => { setClearStatus("idle"); setClearResult(""); }, 6000);
     }
   }
 
@@ -147,6 +174,54 @@ export default function SettingsPage() {
               </div>
             </div>
           )}
+        </section>
+
+        {/* Cloudinary */}
+        <section className="rounded-xl border border-gray-700/50 bg-surface-card p-6">
+          <h2 className="mb-1 text-lg font-semibold text-white">Réinitialiser les données</h2>
+          <p className="mb-4 text-sm text-gray-400">
+            Supprime toutes les détections de <strong className="text-gray-300">Supabase</strong>,
+            tous les logs de <strong className="text-gray-300">MongoDB</strong> et
+            toutes les photos de <strong className="text-gray-300">Cloudinary</strong>.
+            Cette action est irréversible.
+          </p>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleClearCloudinary}
+              disabled={clearStatus === "clearing"}
+              className={
+                clearStatus === "confirming"
+                  ? "rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
+                  : clearStatus === "ok"
+                  ? "rounded-lg bg-green-500/20 border border-green-500/30 px-4 py-2.5 text-sm font-medium text-green-400"
+                  : clearStatus === "error"
+                  ? "rounded-lg bg-red-500/20 border border-red-500/30 px-4 py-2.5 text-sm font-medium text-red-400"
+                  : "rounded-lg border border-red-500/40 px-4 py-2.5 text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+              }
+            >
+              {clearStatus === "idle" && "Réinitialiser toutes les données"}
+              {clearStatus === "confirming" && "Confirmer la suppression ?"}
+              {clearStatus === "clearing" && "Suppression..."}
+              {clearStatus === "ok" && "Données supprimées"}
+              {clearStatus === "error" && "Erreur"}
+            </button>
+
+            {clearStatus === "confirming" && (
+              <button
+                onClick={() => setClearStatus("idle")}
+                className="rounded-lg bg-surface-elevated px-4 py-2.5 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+              >
+                Annuler
+              </button>
+            )}
+
+            {(clearStatus === "ok" || clearStatus === "error") && clearResult && (
+              <span className={`text-xs ${clearStatus === "ok" ? "text-green-400" : "text-red-400"}`}>
+                {clearResult}
+              </span>
+            )}
+          </div>
         </section>
 
         {/* Push notifications info */}
