@@ -1,0 +1,38 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from "@/lib/supabase";
+
+export async function POST(request: NextRequest) {
+  const subscription = await request.json();
+
+  if (!subscription?.endpoint) {
+    return NextResponse.json({ error: "Invalid subscription" }, { status: 400 });
+  }
+
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.from("push_subscriptions").upsert(
+    {
+      endpoint: subscription.endpoint,
+      subscription,
+    },
+    { onConflict: "endpoint" }
+  );
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(request: NextRequest) {
+  const { endpoint } = await request.json();
+
+  if (!endpoint) {
+    return NextResponse.json({ error: "Missing endpoint" }, { status: 400 });
+  }
+
+  const supabase = getSupabaseAdmin();
+  await supabase.from("push_subscriptions").delete().eq("endpoint", endpoint);
+
+  return NextResponse.json({ ok: true });
+}
