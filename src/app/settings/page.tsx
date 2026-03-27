@@ -14,6 +14,8 @@ export default function SettingsPage() {
   const [emailInput, setEmailInput] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [testStatus, setTestStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [testError, setTestError] = useState("");
 
   useEffect(() => {
     fetch("/api/notifications")
@@ -23,6 +25,20 @@ export default function SettingsPage() {
         setEmailInput((data.email_addresses ?? []).join(", "));
       });
   }, []);
+
+  async function handleTestEmail() {
+    setTestStatus("sending");
+    setTestError("");
+    const res = await fetch("/api/notifications/test-email", { method: "POST" });
+    const json = await res.json();
+    if (json.ok) {
+      setTestStatus("ok");
+      setTimeout(() => setTestStatus("idle"), 4000);
+    } else {
+      setTestStatus("error");
+      setTestError(json.error ?? "Erreur inconnue");
+    }
+  }
 
   async function handleSave() {
     if (!settings) return;
@@ -101,7 +117,7 @@ export default function SettingsPage() {
                   className="w-full rounded-lg border border-gray-600 bg-surface-elevated px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
                 />
                 <p className="mt-1 text-xs text-gray-500">
-                  Séparer les adresses par des virgules
+                  Séparer les adresses par des virgules. Avec <code className="text-gray-400">onboarding@resend.dev</code>, seule l&apos;adresse de ton compte Resend recevra les emails.
                 </p>
               </div>
 
@@ -153,8 +169,20 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* Save */}
-        <div className="flex justify-end">
+        {/* Save + Test */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleTestEmail}
+              disabled={testStatus === "sending" || !settings}
+              className="rounded-lg bg-surface-card border border-gray-600 px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:border-gray-500 disabled:opacity-50 transition-colors"
+            >
+              {testStatus === "sending" ? "Envoi..." : testStatus === "ok" ? "Email envoyé !" : "Tester l'email"}
+            </button>
+            {testStatus === "error" && (
+              <span className="text-xs text-red-400">{testError}</span>
+            )}
+          </div>
           <button
             onClick={handleSave}
             disabled={saving || !settings}

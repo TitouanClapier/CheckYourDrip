@@ -1,8 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
+const DEFAULTS = {
+  id: 1,
+  email_addresses: [] as string[],
+  email_enabled: false,
+  min_confidence: 0.5,
+};
+
 export async function GET() {
   const supabase = getSupabaseAdmin();
+
+  // Upsert pour créer la ligne si elle n'existe pas
+  await supabase
+    .from("notification_settings")
+    .upsert(DEFAULTS, { onConflict: "id", ignoreDuplicates: true });
+
   const { data, error } = await supabase
     .from("notification_settings")
     .select("*")
@@ -10,7 +23,7 @@ export async function GET() {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(DEFAULTS);
   }
 
   return NextResponse.json(data);

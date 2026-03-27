@@ -29,6 +29,16 @@ export type MongoLog = {
   objectClass: string;
 };
 
+/** Normalise le champ photo : URL complète ou simple filename → URL Cloudinary */
+function normalizePhotoUrl(photo: unknown): string | null {
+  if (!photo || typeof photo !== "string") return null;
+  if (photo.startsWith("http")) return photo;
+  // Le Python a stocké uniquement le filename — on reconstruit l'URL Cloudinary
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+  if (!cloud) return null;
+  return `https://res.cloudinary.com/${cloud}/image/upload/checkyourdrip/detections/${photo}`;
+}
+
 /** Fetch multiple logs by their ObjectId strings */
 export async function getLogsByIds(
   ids: string[]
@@ -44,7 +54,10 @@ export async function getLogsByIds(
       .toArray();
 
     return Object.fromEntries(
-      docs.map((doc) => [doc._id.toString(), doc as unknown as MongoLog])
+      docs.map((doc) => [
+        doc._id.toString(),
+        { ...(doc as unknown as MongoLog), photo: normalizePhotoUrl(doc.photo) ?? "" },
+      ])
     );
   } catch {
     return {};
