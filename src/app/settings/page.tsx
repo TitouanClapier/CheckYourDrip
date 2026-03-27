@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import PushManager from "@/components/PushManager";
 
 type Settings = {
   email_addresses: string[];
@@ -226,13 +227,14 @@ export default function SettingsPage() {
 
         {/* Push notifications info */}
         <section className="rounded-xl border border-gray-700/50 bg-surface-card p-6">
-          <h2 className="mb-2 text-lg font-semibold text-white">
+          <h2 className="mb-3 text-lg font-semibold text-white">
             Notifications push
           </h2>
+          <div className="mb-4">
+            <PushManager />
+          </div>
           <p className="mb-4 text-sm text-gray-400">
-            Les notifications push sont activées depuis la barre de navigation
-            en haut. Elles fonctionnent sur mobile (Android/iOS Safari 16.4+)
-            et desktop.
+            Elles fonctionnent sur mobile (Android/iOS Safari 16.4+) et desktop.
           </p>
           <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 text-sm text-blue-300">
             Pour recevoir les push en temps réel, configurer un webhook dans
@@ -245,7 +247,7 @@ export default function SettingsPage() {
         </section>
 
         {/* Save + Test */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <button
               onClick={handleTestEmail}
