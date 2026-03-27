@@ -3,6 +3,7 @@ import { getMongoDb } from "@/lib/mongodb";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { ObjectId } from "mongodb";
 
+
 export async function GET() {
   const results: Record<string, unknown> = {};
 

@@ -18,18 +18,29 @@ export async function POST() {
     return NextResponse.json({ error: "Aucune adresse email dans les settings" }, { status: 400 });
   }
 
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json({ error: "RESEND_API_KEY manquant dans les variables Vercel" }, { status: 500 });
+  }
+
   // 2. Envoyer directement et retourner la réponse Resend complète
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const result = await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: process.env.EMAIL_FROM || "onboarding@resend.dev",
     to: settings.email_addresses,
     subject: "[Test] CheckYourDrip — vérification email",
     html: "<p>Test de notification CheckYourDrip. Si vous recevez cet email, la configuration est correcte.</p>",
   });
 
+  if (error) {
+    return NextResponse.json({
+      error: `Resend error: ${error.message}`,
+      resend_error: error,
+    }, { status: 500 });
+  }
+
   return NextResponse.json({
-    settings_email_addresses: settings.email_addresses,
-    settings_email_enabled: settings.email_enabled,
-    resend_response: result,
+    ok: true,
+    email_sent_to: settings.email_addresses,
+    resend_id: data?.id,
   });
 }
